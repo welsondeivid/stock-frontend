@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 
-import {
-  getProducts,
-  deleteProduct,
-  createProduct
-} from "../api/productService";
+import { getProducts, deleteProduct, createProduct} from "../api/productService";
 
 import Create from "../components/Product/Create";
 import Edit from "../components/Product/Edit";
 import Delete from "../components/Product/Delete";
 import Modal from "../components/Modal";
 
-import "../styles/products.css";
+import "../styles/tabs.css";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
@@ -49,8 +45,9 @@ function ProductList() {
   async function handleDeleteConfirm() {
     try {
       await deleteProduct(selectedProduct);
-      setDeleteProductOpen(false);
-      setRefresh(prev => !prev);
+        setDeleteProductOpen(false);
+        setRefresh(prev => !prev);
+        setError(null);
     } catch (error) {
       setError("Erro ao excluir produto");
       console.error("Error deleting product:", error);
@@ -61,6 +58,7 @@ function ProductList() {
     try {
       await createProduct(productData);
       setRefresh(prev => !prev);
+      setError(null);
     } catch (error) {
       setError("Erro ao criar produto");
       console.error("Error creating product:", error);
@@ -77,6 +75,8 @@ function ProductList() {
         <Edit
           productCode={selectedProduct?.code}
           product={selectedProduct}
+          setEditingProductOpen={setEditingProductOpen}
+          setRefresh={setRefresh}
         />
       </Modal>
 

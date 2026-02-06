@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getRawMaterials } from '../../api/rawMaterialService';
 import { getProduct, updateProduct, updateComposition } from '../../api/productService';
 
-function Edit({ productCode, product }) {
+function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [rawMaterials, setRawMaterials] = useState([{ rawMaterialCode: '', required: '' }]);
@@ -93,20 +93,17 @@ function Edit({ productCode, product }) {
         price: price
       };
 
-      // Fazer as duas chamadas em paralelo
       await Promise.all([
         updateProduct(productCode, productBody),
         updateComposition(productCode, rawMaterialsBody)
       ]);
-
-      // Sucesso - você pode adicionar uma mensagem de sucesso ou fechar o modal aqui
-      alert('Produto atualizado com sucesso!');
-      
     } catch (error) {
       setError('Erro ao atualizar produto. Tente novamente.');
       console.error('Error updating product:', error);
     } finally {
       setSaving(false);
+      setEditingProductOpen(false);
+      setRefresh(prev => !prev);
     }
   };
 
