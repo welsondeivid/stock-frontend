@@ -1,9 +1,10 @@
 import { NavLink } from "react-router";
 
+import "../styles/navbar.css";
+
 function NavBar() {
   return (
     <nav>
-      {/* NavLink makes it easy to show active states */}
       <NavLink to="/products" className={({ isActive }) => isActive ? "active" : ""}>
         Produtos
       </NavLink>
