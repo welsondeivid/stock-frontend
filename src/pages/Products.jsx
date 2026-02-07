@@ -6,12 +6,15 @@ import Create from "../components/Product/Create";
 import Edit from "../components/Product/Edit";
 import Delete from "../components/Product/Delete";
 import Modal from "../components/Modal";
+import Toast from "../components/Toast";
 
 import "../styles/tabs.css";
 
+import { mapProductError } from "../utils/Error";
+
 function ProductList() {
   const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
+  const [toast, setToast] = useState(null);
   const [editingProductOpen, setEditingProductOpen] = useState(false);
   const [deleteProductOpen, setDeleteProductOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -22,7 +25,7 @@ function ProductList() {
       const data = await getProducts();
       setProducts(data);
     } catch (error) {
-      setError(error.message);
+      setToast({ message: mapProductError(error), type: "error" });
       console.error("Error fetching products:", error);
     }
   }
@@ -47,9 +50,9 @@ function ProductList() {
       await deleteProduct(selectedProduct);
         setDeleteProductOpen(false);
         setRefresh(prev => !prev);
-        setError(null);
+        setToast({ message: "Produto excluído com sucesso!", type: "success" });
     } catch (error) {
-      setError("Erro ao excluir produto");
+      setToast({ message: mapProductError(error), type: "error" });
       console.error("Error deleting product:", error);
     }
   }
@@ -58,9 +61,9 @@ function ProductList() {
     try {
       await createProduct(productData);
       setRefresh(prev => !prev);
-      setError(null);
+      setToast({ message: "Produto criado com sucesso!", type: "success" });
     } catch (error) {
-      setError("Erro ao criar produto");
+      setToast({ message: mapProductError(error), type: "error" });
       console.error("Error creating product:", error);
     }
   }
@@ -95,8 +98,6 @@ function ProductList() {
       <div className="main">
         <h1>Produtos</h1>
 
-        {error && <p style={{ color: "red" }}>Erro: {error}</p>}
-
         <Create onSubmit={handleCreateProduct} />
 
         <table>
@@ -127,6 +128,14 @@ function ProductList() {
           </tbody>
         </table>
       </div>
+
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
     </>
   );
 }

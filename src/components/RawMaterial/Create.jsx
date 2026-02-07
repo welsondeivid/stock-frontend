@@ -61,7 +61,7 @@ function Create({ onSubmit }) {
                 cursor: 'pointer'
               }}
             >
-              Criar Produto
+              Criar Matéria-prima
             </button>
           </div>
         </form>

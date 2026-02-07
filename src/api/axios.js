@@ -7,4 +7,19 @@ const api = axios.create({
     },
 });
 
+api.interceptors.response.use(
+  response => response,
+  error => {
+    const normalizedError = {
+      status: error.response?.status,
+      message:
+        error.response?.data?.message ||
+        "Erro ao comunicar com o servidor",
+      raw: error
+    };
+
+    return Promise.reject(normalizedError);
+  }
+);
+
 export default api;

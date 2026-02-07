@@ -4,10 +4,13 @@ import Edit  from "../components/RawMaterial/Edit";
 import Delete from "../components/RawMaterial/Delete";
 import Create from "../components/RawMaterial/Create";
 import Modal from "../components/Modal";
+import Toast from "../components/Toast";
 
 import { getRawMaterials, createRawMaterial, deleteRawMaterial } from "../api/rawMaterialService";
 
 import "../styles/tabs.css";
+
+import { mapProductError } from "../utils/Error";
 
 function RawMaterialsList() {
 
@@ -16,14 +19,14 @@ function RawMaterialsList() {
     const [editingRawMaterialOpen, setEditingRawMaterialOpen] = useState(false);
     const [deleteRawMaterialOpen, setDeleteRawMaterialOpen] = useState(false);
     const [refresh, setRefresh] = useState(false);
-    const [error, setError] = useState(null);
+    const [toast, setToast] = useState(null);
 
     async function loadRawMaterials() {
         try {
             const data = await getRawMaterials();
             setRawMaterials(data);
         } catch (error) {
-            setError(error.message);
+            setToast({ message: mapProductError(error), type: "error" });
             console.error("Error fetching raw materials:", error);
         }
     }
@@ -48,9 +51,9 @@ function RawMaterialsList() {
             await deleteRawMaterial(selectedRawMaterial);
             setDeleteRawMaterialOpen(false);
             setRefresh(prev => !prev);
-            setError(null);
+            setToast({ message: "Matéria-prima excluída com sucesso!", type: "success" });
         } catch (error) {
-            setError("Erro ao excluir matéria-prima");
+            setToast({ message: mapProductError(error), type: "error" });
             console.error("Error deleting raw material:", error);
         }
     }
@@ -59,9 +62,9 @@ function RawMaterialsList() {
         try {
             await createRawMaterial(rawMaterialData);
             setRefresh(prev => !prev);
-            setError(null);
+            setToast({ message: "Matéria-prima criada com sucesso!", type: "success" });
         } catch (error) {
-          setError("Erro ao criar matéria-prima");
+          setToast({ message: mapProductError(error), type: "error" });
           console.error("Error creating raw material:", error);
         }
     }
@@ -78,7 +81,6 @@ function RawMaterialsList() {
             </Modal>
             
             <div className="main">
-                {error && <p style={{ color: 'red' }}>Erro: {error}</p>}
                 
                 <h1>Matérias-Primas</h1>
                 
@@ -108,6 +110,14 @@ function RawMaterialsList() {
                     </tbody>
                 </table>
             </div>
+
+            {toast && (
+            <Toast
+                type={toast.type}
+                message={toast.message}
+                onClose={() => setToast(null)}
+            />
+            )}
         </>
     );
 }
