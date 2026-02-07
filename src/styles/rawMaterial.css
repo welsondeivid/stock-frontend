@@ -1,0 +1,13 @@
+.raw-material-edit-container h2 {
+  margin-top: 0;
+}
+
+.raw-material-delete-container h2 {
+  margin-top: 0;
+}
+
+.raw-material-delete-code {
+  font-weight: bold;
+  margin-top: 10px;
+}
+

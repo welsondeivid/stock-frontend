@@ -101,7 +101,7 @@ function RawMaterialsList() {
                                 <td>{rm.code}</td>
                                 <td>{rm.name}</td>
                                 <td>{rm.amount}</td>
-                                <td>
+                                <td className="actions-td">
                                     <button onClick={() => openEditModal(rm.code)}>Editar</button>
                                     <button onClick={() => openDeleteModal(rm.code)}>Excluir</button>
                                 </td>

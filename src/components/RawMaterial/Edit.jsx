@@ -1,5 +1,8 @@
 import { useState, useEffect, use } from 'react';
 import { updateRawMaterial } from '../../api/rawMaterialService';
+import '../../styles/form.css';
+import '../../styles/button.css';
+import '../../styles/rawMaterial.css';
 
 function Edit({ rawMaterialCode, rawMaterial, setEditingRawMaterialOpen, setRefresh }) {
 
@@ -69,13 +72,13 @@ function Edit({ rawMaterialCode, rawMaterial, setEditingRawMaterialOpen, setRefr
   }
 
   return (
-      <>
+      <div className="raw-material-edit-container">
         <h2>Editar Matéria Prima</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p className="form-error">{error}</p>}
         
         <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '15px' }}>
-            <label>
+            <div className="form-group">
+            <label className="form-label">
                 Nome da Matéria-Prima:
                 <input
                 type="text"
@@ -83,13 +86,13 @@ function Edit({ rawMaterialCode, rawMaterial, setEditingRawMaterialOpen, setRefr
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Nome da matéria-prima"
                 required
-                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                className="form-input"
                 />
             </label>
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
-              <label>
+            <div className="form-group">
+              <label className="form-label">
                   Quantidade da Matéria-Prima:
                   <input
                   type="number"
@@ -97,27 +100,19 @@ function Edit({ rawMaterialCode, rawMaterial, setEditingRawMaterialOpen, setRefr
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="Quantidade da matéria-prima"
                   required
-                  style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                  className="form-input"
                   />
               </label>
             </div>
               <button
               type="submit"
               disabled={saving}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: saving ? '#6c757d' : '#007bff',
-                color: 'white',
-                border: 'none',
-                cursor: saving ? 'not-allowed' : 'pointer',
-                width: '100%',
-                marginTop: '20px'
-              }}
+              className="btn btn-primary btn-full-width"
             >
               {saving ? 'Salvando...' : 'Salvar Alterações'}
             </button>
         </form>
-    </>
+    </div>
   );
 }
 

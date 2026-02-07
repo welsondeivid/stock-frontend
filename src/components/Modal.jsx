@@ -17,11 +17,7 @@ export default function Modal({ id, isOpen, setIsOpen, children }) {
 
             <section id={id} onClick={handleModalClick} className='modal'>
 
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginBottom: '10px'
-                }}>
+                <div className="modal-header">
                     <button 
                         className='closeBtn'
                         onClick={closeModal}> 

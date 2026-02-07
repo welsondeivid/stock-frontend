@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getRawMaterials } from '../../api/rawMaterialService';
 import { getProduct, updateProduct, updateComposition } from '../../api/productService';
+import '../../styles/form.css';
+import '../../styles/button.css';
+import '../../styles/product.css';
 
 function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
   const [name, setName] = useState('');
@@ -117,13 +120,13 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
   }
 
   return (
-    <div>
+    <div className="product-edit-container">
       <h2>Editar Produto</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="form-error">{error}</p>}
       
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label>
+        <div className="form-group">
+          <label className="form-label">
             Nome do Produto:
             <input
               type="text"
@@ -131,13 +134,13 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
               onChange={(e) => setName(e.target.value)}
               placeholder="Nome do produto"
               required
-              style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+              className="form-input"
             />
           </label>
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
-          <label>
+        <div className="form-group">
+          <label className="form-label">
             Preço do Produto:
             <input
               type="number"
@@ -146,28 +149,23 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
               placeholder="Preço do produto"
               step="0.01"
               required
-              style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+              className="form-input"
             />
           </label>
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
+        <div className="form-group">
           <h3>Matérias-Primas</h3>
           {rawMaterials.map((rm, index) => (
-            <div key={index} style={{ 
-              display: 'flex', 
-              gap: '10px', 
-              marginBottom: '10px',
-              alignItems: 'flex-end'
-            }}>
-              <div style={{ flex: 1 }}>
-                <label>
+            <div key={index} className="raw-material-group">
+              <div className="raw-material-group-item">
+                <label className="form-label">
                   Código da Matéria-Prima:
                   <select
                     value={rm.rawMaterialCode}
                     onChange={(e) => updateRawMaterial(index, 'rawMaterialCode', e.target.value)}
                     required
-                    style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                    className="form-select"
                   >
                     <option value="">Selecione...</option>
                     {availableRawMaterials.map(rawMat => (
@@ -179,8 +177,8 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
                 </label>
               </div>
               
-              <div style={{ flex: 1 }}>
-                <label>
+              <div className="raw-material-group-item">
+                <label className="form-label">
                   Quantidade Requerida:
                   <input
                     type="number"
@@ -189,7 +187,7 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
                     placeholder="Quantidade"
                     min="1"
                     required
-                    style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                    className="form-input"
                   />
                 </label>
               </div>
@@ -198,14 +196,7 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
                 type="button"
                 onClick={() => removeRawMaterialGroup(index)}
                 disabled={rawMaterials.length === 1}
-                style={{ 
-                  padding: '8px 15px',
-                  backgroundColor: rawMaterials.length === 1 ? '#ccc' : '#dc3545',
-                  color: 'white',
-                  border: 'none',
-                  cursor: rawMaterials.length === 1 ? 'not-allowed' : 'pointer',
-                  height: 'fit-content'
-                }}
+                className="btn btn-danger btn-remove"
               >
                 Remover
               </button>
@@ -215,14 +206,7 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
           <button
             type="button"
             onClick={addRawMaterialGroup}
-            style={{
-              padding: '8px 15px',
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              cursor: 'pointer',
-              marginTop: '10px'
-            }}
+            className="btn btn-success btn-add-raw-material"
           >
             + Adicionar Matéria-Prima
           </button>
@@ -231,15 +215,7 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
         <button
           type="submit"
           disabled={saving}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: saving ? '#6c757d' : '#007bff',
-            color: 'white',
-            border: 'none',
-            cursor: saving ? 'not-allowed' : 'pointer',
-            width: '100%',
-            marginTop: '20px'
-          }}
+          className="btn btn-primary btn-full-width"
         >
           {saving ? 'Salvando...' : 'Salvar Alterações'}
         </button>

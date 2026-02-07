@@ -1,3 +1,6 @@
+import '../../styles/form.css';
+import '../../styles/button.css';
+
 function Create({ onSubmit }) {
 
     function handleSubmit(e) {
@@ -15,23 +18,14 @@ function Create({ onSubmit }) {
   
     return (
       <>
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            marginBottom: '20px',
-            padding: '15px',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            marginTop: '20px'
-          }}
-        >
-          <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+        <form onSubmit={handleSubmit} className="form-container">
+          <div className="form-row">
             <input
               type="text"
               placeholder="Código da matéria-prima"
               name="code"
               required
-              style={{ flex: 1, padding: '8px' }}
+              className="form-input-flex"
             />
   
             <input
@@ -39,7 +33,7 @@ function Create({ onSubmit }) {
               placeholder="Nome da matéria-prima"
               name="name"
               required
-              style={{ flex: 1, padding: '8px' }}
+              className="form-input-flex"
             />
   
             <input
@@ -47,20 +41,10 @@ function Create({ onSubmit }) {
               placeholder="Estoque da matéria-prima"
               name="amount"
               required
-              style={{ flex: 1, padding: '8px' }}
+              className="form-input-flex"
             />
   
-            <button
-              type="submit"
-              style={{
-                padding: '8px 20px',
-                backgroundColor: '#28a745',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
+            <button type="submit" className="btn btn-success">
               Criar Matéria-prima
             </button>
           </div>

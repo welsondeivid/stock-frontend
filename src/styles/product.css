@@ -1,0 +1,18 @@
+.product-edit-container h2 {
+  margin-top: 0;
+}
+
+.product-edit-container h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.product-delete-container h2 {
+  margin-top: 0;
+}
+
+.product-delete-code {
+  font-weight: bold;
+  margin-top: 10px;
+}
+

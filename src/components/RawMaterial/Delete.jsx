@@ -1,47 +1,23 @@
+import '../../styles/button.css';
+import '../../styles/rawMaterial.css';
+
 function Delete({ selectedRawMaterial, onCancel, onConfirm }) {
     return (
-      <div>
+      <div className="raw-material-delete-container">
         <h2>Confirmar Exclusão</h2>
   
         <p>Tem certeza que deseja excluir esta Matéria-Prima?</p>
   
-        <p style={{ fontWeight: "bold", marginTop: "10px" }}>
+        <p className="raw-material-delete-code">
           Código: {selectedRawMaterial}
         </p>
   
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            justifyContent: "flex-end",
-            marginTop: "20px",
-          }}
-        >
-          <button
-            onClick={onCancel}
-            style={{
-              padding: "8px 20px",
-              backgroundColor: "#6c757d",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
+        <div className="button-group">
+          <button onClick={onCancel} className="btn btn-secondary">
             Não
           </button>
   
-          <button
-            onClick={onConfirm}
-            style={{
-              padding: "8px 20px",
-              backgroundColor: "#dc3545",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
+          <button onClick={onConfirm} className="btn btn-danger">
             Sim
           </button>
         </div>
