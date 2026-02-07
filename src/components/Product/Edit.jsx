@@ -128,7 +128,6 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
     <>
       <div className="product-edit-container">
         <h2>Editar Produto</h2>
-        {error && <p className="form-error">{error}</p>}
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">

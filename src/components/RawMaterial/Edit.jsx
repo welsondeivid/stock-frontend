@@ -78,7 +78,6 @@ function Edit({ rawMaterialCode, rawMaterial, setEditingRawMaterialOpen, setRefr
     <>
       <div className="raw-material-edit-container">
         <h2>Editar Matéria Prima</h2>
-        {error && <p className="form-error">{error}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
