@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
+
 import { getRawMaterials } from '../../api/rawMaterialService';
 import { getProduct, updateProduct, updateComposition } from '../../api/productService';
+
 import '../../styles/form.css';
 import '../../styles/button.css';
 import '../../styles/product.css';
+
+import Toast from "../Toast";
+
+import { mapProductError } from "../../utils/Error";
 
 function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [rawMaterials, setRawMaterials] = useState([{ rawMaterialCode: '', required: '' }]);
   const [availableRawMaterials, setAvailableRawMaterials] = useState([]);
-  const [error, setError] = useState(null);
+  const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -20,7 +26,7 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
         const data = await getRawMaterials();
         setAvailableRawMaterials(data);
       } catch (error) {
-        setError('Erro ao carregar matérias-primas');
+        setToast({ message: mapProductError(error), type: "error" });
         console.error('Error fetching raw materials:', error);
       }
     }
@@ -50,7 +56,7 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
           setRawMaterials([{ rawMaterialCode: '', required: '' }]);
         }
       } catch (error) {
-        setError('Erro ao carregar dados do produto');
+        setToast({ message: mapProductError(error), type: "error" });
         console.error('Error fetching product data:', error);
       } finally {
         setLoading(false);
@@ -80,7 +86,6 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
     e.preventDefault();
 
     setSaving(true);
-    setError(null);
 
     try {
       const rawMaterialsBody = rawMaterials
@@ -101,7 +106,7 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
         updateComposition(productCode, rawMaterialsBody)
       ]);
     } catch (error) {
-      setError('Erro ao atualizar produto. Tente novamente.');
+      setToast({ message: mapProductError(error), type: "error" });
       console.error('Error updating product:', error);
     } finally {
       setSaving(false);
@@ -120,107 +125,117 @@ function Edit({ productCode, product, setEditingProductOpen, setRefresh }) {
   }
 
   return (
-    <div className="product-edit-container">
-      <h2>Editar Produto</h2>
-      {error && <p className="form-error">{error}</p>}
-      
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">
-            Nome do Produto:
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nome do produto"
-              required
-              className="form-input"
-            />
-          </label>
-        </div>
+    <>
+      <div className="product-edit-container">
+        <h2>Editar Produto</h2>
+        {error && <p className="form-error">{error}</p>}
+        
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">
+              Nome do Produto:
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nome do produto"
+                required
+                className="form-input"
+              />
+            </label>
+          </div>
 
-        <div className="form-group">
-          <label className="form-label">
-            Preço do Produto:
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="Preço do produto"
-              step="0.01"
-              required
-              className="form-input"
-            />
-          </label>
-        </div>
+          <div className="form-group">
+            <label className="form-label">
+              Preço do Produto:
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="Preço do produto"
+                step="0.01"
+                required
+                className="form-input"
+              />
+            </label>
+          </div>
 
-        <div className="form-group">
-          <h3>Matérias-Primas</h3>
-          {rawMaterials.map((rm, index) => (
-            <div key={index} className="raw-material-group">
-              <div className="raw-material-group-item">
-                <label className="form-label">
-                  Código da Matéria-Prima:
-                  <select
-                    value={rm.rawMaterialCode}
-                    onChange={(e) => updateRawMaterial(index, 'rawMaterialCode', e.target.value)}
-                    required
-                    className="form-select"
-                  >
-                    <option value="">Selecione...</option>
-                    {availableRawMaterials.map(rawMat => (
-                      <option key={rawMat.code} value={rawMat.code}>
-                        {rawMat.code} - {rawMat.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+          <div className="form-group">
+            <h3>Matérias-Primas</h3>
+            {rawMaterials.map((rm, index) => (
+              <div key={index} className="raw-material-group">
+                <div className="raw-material-group-item">
+                  <label className="form-label">
+                    Código da Matéria-Prima:
+                    <select
+                      value={rm.rawMaterialCode}
+                      onChange={(e) => updateRawMaterial(index, 'rawMaterialCode', e.target.value)}
+                      required
+                      className="form-select"
+                    >
+                      <option value="">Selecione...</option>
+                      {availableRawMaterials.map(rawMat => (
+                        <option key={rawMat.code} value={rawMat.code}>
+                          {rawMat.code} - {rawMat.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+                
+                <div className="raw-material-group-item">
+                  <label className="form-label">
+                    Quantidade Requerida:
+                    <input
+                      type="number"
+                      value={rm.required}
+                      onChange={(e) => updateRawMaterial(index, 'required', e.target.value)}
+                      placeholder="Quantidade"
+                      min="1"
+                      required
+                      className="form-input"
+                    />
+                  </label>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => removeRawMaterialGroup(index)}
+                  disabled={rawMaterials.length === 1}
+                  className="btn btn-danger btn-remove"
+                >
+                  Remover
+                </button>
               </div>
-              
-              <div className="raw-material-group-item">
-                <label className="form-label">
-                  Quantidade Requerida:
-                  <input
-                    type="number"
-                    value={rm.required}
-                    onChange={(e) => updateRawMaterial(index, 'required', e.target.value)}
-                    placeholder="Quantidade"
-                    min="1"
-                    required
-                    className="form-input"
-                  />
-                </label>
-              </div>
+            ))}
 
-              <button
-                type="button"
-                onClick={() => removeRawMaterialGroup(index)}
-                disabled={rawMaterials.length === 1}
-                className="btn btn-danger btn-remove"
-              >
-                Remover
-              </button>
-            </div>
-          ))}
+            <button
+              type="button"
+              onClick={addRawMaterialGroup}
+              className="btn btn-success btn-add-raw-material"
+            >
+              + Adicionar Matéria-Prima
+            </button>
+          </div>
 
           <button
-            type="button"
-            onClick={addRawMaterialGroup}
-            className="btn btn-success btn-add-raw-material"
+            type="submit"
+            disabled={saving}
+            className="btn btn-primary btn-full-width"
           >
-            + Adicionar Matéria-Prima
+            {saving ? 'Salvando...' : 'Salvar Alterações'}
           </button>
-        </div>
+        </form>
+      </div>
 
-        <button
-          type="submit"
-          disabled={saving}
-          className="btn btn-primary btn-full-width"
-        >
-          {saving ? 'Salvando...' : 'Salvar Alterações'}
-        </button>
-      </form>
-    </div>
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
+    </>
   );
 }
 
