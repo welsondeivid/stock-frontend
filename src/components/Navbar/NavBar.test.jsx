@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, Routes, Route } from 'react-router';
 import NavBar from './Index';
+import { test } from 'vitest';
 
 function renderNavBar() {
   return render(
@@ -9,6 +10,8 @@ function renderNavBar() {
     </MemoryRouter>
   );
 }
+
+//Testes de Renderização
 
 test('renders navigation links', () => {
   renderNavBar();
@@ -40,12 +43,62 @@ test('closes menu when clicking a link', () => {
   const { container } = renderNavBar();
 
   const button = screen.getByRole('button');
-  fireEvent.click(button); // abre
+  const links = ['Produtos', 'Matérias-Prima', 'Produtos Disponíveis'];
 
-  const nav = container.querySelector('nav');
-  expect(nav).toHaveClass('open');
+  links.forEach(link => {
+    fireEvent.click(button);
 
-  fireEvent.click(screen.getByText('Produtos')); // fecha
+    const nav = container.querySelector('nav');
+    expect(nav).toHaveClass('open');
 
-  expect(nav).not.toHaveClass('open');
+    fireEvent.click(screen.getByText(link));
+    expect(nav).not.toHaveClass('open');
+  });
+});
+
+//Testes de Navegação
+
+test('navigates to Products page', async () => {
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <Routes>
+        <Route path="/" element={<NavBar />} />
+        <Route path="/products" element={<div>Products Page</div>} />
+      </Routes>
+    </MemoryRouter>
+  );
+});
+
+test('navigates to Raw Materials page', async () => {
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <Routes>
+        <Route path="/" element={<NavBar />} />
+        <Route path="/raw-materials" element={<div>Raw Materials Page</div>} />
+      </Routes>
+    </MemoryRouter>
+  );
+});
+
+test('navigates to Available Products page', async () => {
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <Routes>
+        <Route path="/" element={<NavBar />} />
+        <Route path="/production" element={<div>Available Products Page</div>} />
+      </Routes>
+    </MemoryRouter>
+  );
+});
+
+test("adds active class to current route link", () => {
+  render(
+    <MemoryRouter initialEntries={["/products"]}>
+      <NavBar />
+    </MemoryRouter>
+  );
+
+  const produtosLink = screen.getByText("Produtos");
+
+  expect(produtosLink).toHaveClass("active");
 });
