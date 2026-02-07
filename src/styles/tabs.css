@@ -5,7 +5,8 @@
 
 table{
     width: 100%;
-    padding: 10px 10px 10px 0px;
+    padding: 10px 10px 10px 10px;
+    border: #ddd 1px solid;
 }
 
 thead{  
@@ -13,9 +14,10 @@ thead{
     text-align: left;
 }
 
-th, td{
+td {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
+    vertical-align: top;
 }
 
 .actions-td{
