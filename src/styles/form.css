@@ -57,5 +57,31 @@
 
 .btn-add-raw-material {
   margin-top: 10px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-input-flex {
+    padding: 10px;
+  }
+
+  .raw-material-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .raw-material-group-item {
+    width: 100%;
+  }
+
+  .form-container {
+    padding: 12px;
+    margin-top: 15px;
+  }
 }
 

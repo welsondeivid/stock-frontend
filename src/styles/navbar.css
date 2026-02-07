@@ -1,14 +1,54 @@
 nav {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    background-color: #333;
-    color: #fff;
-    width: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background-color: #333;
+  color: #fff;
+  width: 170px;
+  height: 100vh;
 }
 
-.active{
-    font-weight: bold;
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 220px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 10000;
+  }
+
+  nav.open {
+    transform: translateX(0);
+  }
+
+  .hamburger {
+    display: block;
+  }
 }

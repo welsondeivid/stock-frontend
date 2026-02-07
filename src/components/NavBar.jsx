@@ -1,22 +1,41 @@
+import { useState } from "react";
 import { NavLink } from "react-router";
+
+import Menu from "./Icons/Menu";
 
 import "../styles/navbar.css";
 
 function NavBar() {
+  const [open, setOpen] = useState(false);
+
+  function toggleMenu() {
+    setOpen(prev => !prev);
+  }
+
+  function closeMenu() {
+    setOpen(false);
+  }
+
   return (
-    <nav>
-      <NavLink to="/products" className={({ isActive }) => isActive ? "active" : ""}>
-        Produtos
-      </NavLink>
+    <>
+      <button className="hamburger" onClick={toggleMenu}>
+        <Menu/>
+      </button>
 
-      <NavLink to="/raw-materials" className={({ isActive }) => isActive ? "active" : ""}>
-        Matérias-Prima
-      </NavLink>
+      <nav className={open ? "open" : ""}>
+        <NavLink to="/products" onClick={closeMenu} className={({ isActive }) => isActive ? "active" : ""}>
+          Produtos
+        </NavLink>
 
-      <NavLink to="/production" className={({ isActive }) => isActive ? "active" : ""}>
-        Produtos Disponíveis
-      </NavLink>
-    </nav>
+        <NavLink to="/raw-materials" onClick={closeMenu} className={({ isActive }) => isActive ? "active" : ""}>
+          Matérias-Prima
+        </NavLink>
+
+        <NavLink to="/production" onClick={closeMenu} className={({ isActive }) => isActive ? "active" : ""}>
+          Produtos Disponíveis
+        </NavLink>
+      </nav>
+    </>
   );
 }
 

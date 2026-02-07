@@ -9,8 +9,8 @@ import "../styles/tabs.css";
 import { mapProductError } from "../utils/Error";
 
 function AvailableProductsList() {
-  const [availableProducts, setAvailableProducts] = useState([]);
-  const [toast, setToast] = useState(null);
+    const [availableProducts, setAvailableProducts] = useState([]);
+    const [toast, setToast] = useState(null);
 
     useEffect(() => {
         async function getAvailableProducts() {
