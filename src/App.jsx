@@ -4,7 +4,7 @@ import Products from "./pages/Products";
 import RawMaterial from "./pages/RawMaterial";
 import AvailableProductsList from "./pages/Production";
 
-import NavBar from "./components/NavBar";
+import NavBar from "./components/Navbar/Index";
 
 import "./styles/global.css";
 
@@ -12,7 +12,7 @@ function App() {
   return (
     <BrowserRouter>
     <main>
-      <NavBar />
+      <NavBar/>
 
       <Routes>
         <Route path="/" element={<AvailableProductsList />} />
