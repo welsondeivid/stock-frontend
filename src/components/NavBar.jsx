@@ -23,6 +23,7 @@ function NavBar() {
       </button>
 
       <nav className={open ? "open" : ""}>
+
         <NavLink to="/products" onClick={closeMenu} className={({ isActive }) => isActive ? "active" : ""}>
           Produtos
         </NavLink>
@@ -31,7 +32,7 @@ function NavBar() {
           Matérias-Prima
         </NavLink>
 
-        <NavLink to="/production" onClick={closeMenu} className={({ isActive }) => isActive ? "active" : ""}>
+        <NavLink to="/" onClick={closeMenu} className={({ isActive }) => isActive ? "active" : ""}>
           Produtos Disponíveis
         </NavLink>
       </nav>
